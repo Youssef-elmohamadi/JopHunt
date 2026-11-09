@@ -16,7 +16,7 @@ def test_index_page():
     response = client.get("/")
     assert response.status_code == 200
     assert "Atrees" in response.text
-    assert "لوحة تحكم عريس" in response.text
+    assert "لوحة تحكم عتريس" in response.text
     print("✅ Index HTML served successfully.")
 
 

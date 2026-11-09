@@ -23,7 +23,7 @@ async def main():
         user_input = " ".join(sys.argv[1:]).strip()
     else:
         print("=" * 60)
-        print("🎯 [تجربة مشروع حقيقي على نظام عريس]")
+        print("🎯 [تجربة مشروع حقيقي على نظام عتريس]")
         print("=" * 60)
         user_input = input("👉 ضع رابط المشروع (مستقل / نفذلي) أو نص المشروع واضغط Enter:\n> ").strip()
 

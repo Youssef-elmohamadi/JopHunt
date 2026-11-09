@@ -441,7 +441,7 @@ async def handle_proposal_tweak_reply(message: Message):
 async def cmd_start_help(message: Message):
     """Sends greeting, status overview and command instructions."""
     help_text = (
-        "🤖 <b>أهلاً بك في نظام عريس (Atrees) لصيد مشاريع العمل الحر!</b>\n\n"
+        "🤖 <b>أهلاً بك في نظام عتريس (Atrees) لصيد مشاريع العمل الحر!</b>\n\n"
         "النظام يعمل في الخلفية لمراقبة قنوات ومجموعات التيليجرام لحظياً، "
         "وتقييم المشاريع باستخدام Gemini AI، وصياغة عروض مقنعة بمجرد رصد وظيفة مطابقة لخبرتك.\n\n"
         "📋 <b>الأوامر المتاحة:</b>\n"
@@ -459,7 +459,7 @@ async def cmd_status(message: Message):
     """Displays current system and job statistics from database."""
     stats = database.get_jobs_stats()
     text = (
-        "📊 <b>إحصائيات نظام عريس (Atrees):</b>\n\n"
+        "📊 <b>إحصائيات نظام عتريس (Atrees):</b>\n\n"
         f"🔹 <b>إجمالي المشاريع المسجلة:</b> {stats['total']}\n"
         f"⏳ <b>المشاريع المعلقة (بانتظار قرارك):</b> {stats['pending']}\n"
         f"🚀 <b>المشاريع المقدمة بنجاح:</b> {stats['submitted']}\n"

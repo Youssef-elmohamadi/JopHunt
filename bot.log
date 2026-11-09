@@ -342,3 +342,209 @@ Call stack:
     logger.info(
 Message: '\u274c [SKIPPED / NOT RELEVANT] MsgID: %s | Reason: %s'
 Arguments: (68975, '\u0627\u0644\u0645\u0634\u0631\u0648\u0639 \u064a\u062a\u0639\u0644\u0642 \u0628\u062e\u062f\u0645\u0627\u062a \u062a\u0642\u064a\u064a\u0645\u0627\u062a \u062c\u0648\u062c\u0644 (Google Reviews) \u0648\u0644\u064a\u0633 \u062a\u0637\u0648\u064a\u0631 \u0628\u0631\u0645\u062c\u064a\u0627\u062a \u0623\u0648 \u0645\u0648\u0627\u0642\u0639 \u0648\u064a\u0628.')
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 87-91: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 39, in process_new_job
+    logger.info("Processing incoming job from '%s' (Msg: %s)...", chat_title, msg_id)
+Message: "Processing incoming job from '%s' (Msg: %s)..."
+Arguments: ('Nafezly - \u0646\u0641\u0630\u0644\u064a', 38135)
+2026-11-09 17:55:49 [INFO] [atrees.scraper]: Attempting to fetch full project details from: https://nafezly.com/project/57939
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 87-91: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 39, in process_new_job
+    logger.info("Processing incoming job from '%s' (Msg: %s)...", chat_title, msg_id)
+Message: "Processing incoming job from '%s' (Msg: %s)..."
+Arguments: ('Nafezly - \u0646\u0641\u0630\u0644\u064a', 38134)
+2026-11-09 17:55:49 [INFO] [atrees.scraper]: Attempting to fetch full project details from: https://nafezly.com/project/57938
+2026-11-09 17:55:49 [INFO] [atrees.ai_engine]: Attempting job analysis via Provider: [Gemini API]...
+2026-11-09 17:55:49 [INFO] [google_genai.models]: AFC is enabled with max remote calls: 10.
+2026-11-09 17:55:49 [INFO] [atrees.ai_engine]: Attempting job analysis via Provider: [Gemini API]...
+2026-11-09 17:55:49 [INFO] [google_genai.models]: AFC is enabled with max remote calls: 10.
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 47: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 48, in process_new_job
+    result: JobAnalysisResult | None = await evaluate_and_draft(
+  File "W:\Atrees\ai_engine.py", line 391, in evaluate_and_draft
+    return await ai_engine.evaluate_and_draft(job_text, job_url)
+  File "W:\Atrees\ai_engine.py", line 371, in evaluate_and_draft
+    logger.info("\u2705 [%s] successfully analyzed job and generated proposal.", provider_name)
+Message: '\u2705 [%s] successfully analyzed job and generated proposal.'
+Arguments: ('Gemini API',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 47: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 61, in process_new_job
+    logger.info(
+Message: '\u274c [SKIPPED / NOT RELEVANT] MsgID: %s | Reason: %s'
+Arguments: (38135, 'The project is focused on Cybersecurity and SIEM rule creation (Sigma/ELK), which falls outside the scope of Full-Stack Web Development.')
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 47: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 48, in process_new_job
+    result: JobAnalysisResult | None = await evaluate_and_draft(
+  File "W:\Atrees\ai_engine.py", line 391, in evaluate_and_draft
+    return await ai_engine.evaluate_and_draft(job_text, job_url)
+  File "W:\Atrees\ai_engine.py", line 371, in evaluate_and_draft
+    logger.info("\u2705 [%s] successfully analyzed job and generated proposal.", provider_name)
+Message: '\u2705 [%s] successfully analyzed job and generated proposal.'
+Arguments: ('Gemini API',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 47: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 61, in process_new_job
+    logger.info(
+Message: '\u274c [SKIPPED / NOT RELEVANT] MsgID: %s | Reason: %s'
+Arguments: (38134, 'The project is for graphic design (poster creation), which falls outside the scope of web development.')
