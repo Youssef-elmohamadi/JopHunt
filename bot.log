@@ -1,0 +1,344 @@
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 16:52:51
+============================================================
+TG_API_ID or TG_API_HASH is missing. Please ensure your .env file is properly configured.
+
+[DASHBOARD] Bot stopped at 2026-11-09 16:52:53
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 16:55:30
+============================================================
+TG_API_ID or TG_API_HASH is missing. Please ensure your .env file is properly configured.
+BOT_TOKEN is not configured or still a placeholder. Approval bot will not send messages.
+2026-11-09 16:55:37 [INFO] [atrees.listener]: Starting Atrees System (Telethon Listener + Approval Bot)...
+2026-11-09 16:55:37 [INFO] [atrees.listener]: Target channels configured: ['@nafezly', '@KhamsatRequests', '@MostaqlDevelopment']
+2026-11-09 16:55:37 [ERROR] [atrees.listener]: Missing Telegram credentials! Please set TG_API_ID and TG_API_HASH in .env
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:08:35
+============================================================
+2026-11-09 17:08:44 [INFO] [atrees.listener]: Starting Atrees System (Telethon Listener + Approval Bot)...
+2026-11-09 17:08:44 [INFO] [atrees.listener]: Target channels configured: ['@nafezly', '@KhamsatRequests', '@MostaqlDevelopment']
+2026-11-09 17:08:44 [INFO] [telethon.network.mtprotosender]: Connecting to 149.154.167.92:443/TcpFull...
+2026-11-09 17:08:44 [INFO] [telethon.network.mtprotosender]: Connection to 149.154.167.92:443/TcpFull complete!
+2026-11-09 17:08:45 [INFO] [atrees.listener]: Telethon Userbot logged in as: Youssef (@y_elmohamadi1)
+2026-11-09 17:08:45 [INFO] [atrees.listener]: Approval Bot initialized. Starting bot polling alongside userbot...
+2026-11-09 17:08:45 [INFO] [atrees.listener]: Atrees is fully active and listening. Press Ctrl+C to stop.
+2026-11-09 17:08:45 [INFO] [aiogram.dispatcher]: Start polling
+2026-11-09 17:08:46 [INFO] [aiogram.dispatcher]: Run polling for bot @youssef212bot id=9033323321 - 'HunterBot'
+2026-11-09 17:09:15 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [WinError 121] The semaphore timeout period has expired
+2026-11-09 17:09:15 [WARNING] [aiogram.dispatcher]: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 9033323321)
+2026-11-09 17:09:27 [INFO] [aiogram.dispatcher]: Connection established (tryings = 1, bot id = 9033323321)
+2026-11-09 17:11:51 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:11:51 [WARNING] [aiogram.dispatcher]: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 9033323321)
+2026-11-09 17:11:56 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:11:56 [WARNING] [aiogram.dispatcher]: Sleep for 1.172002 seconds and try again... (tryings = 1, bot id = 9033323321)
+2026-11-09 17:12:02 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:02 [WARNING] [aiogram.dispatcher]: Sleep for 1.450317 seconds and try again... (tryings = 2, bot id = 9033323321)
+2026-11-09 17:12:09 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:09 [WARNING] [aiogram.dispatcher]: Sleep for 1.765097 seconds and try again... (tryings = 3, bot id = 9033323321)
+2026-11-09 17:12:16 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:16 [WARNING] [aiogram.dispatcher]: Sleep for 2.273324 seconds and try again... (tryings = 4, bot id = 9033323321)
+2026-11-09 17:12:22 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:22 [WARNING] [aiogram.dispatcher]: Sleep for 2.932486 seconds and try again... (tryings = 5, bot id = 9033323321)
+2026-11-09 17:12:29 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:29 [WARNING] [aiogram.dispatcher]: Sleep for 3.756076 seconds and try again... (tryings = 6, bot id = 9033323321)
+2026-11-09 17:12:39 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:39 [WARNING] [aiogram.dispatcher]: Sleep for 4.734305 seconds and try again... (tryings = 7, bot id = 9033323321)
+2026-11-09 17:12:48 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:48 [WARNING] [aiogram.dispatcher]: Sleep for 4.887392 seconds and try again... (tryings = 8, bot id = 9033323321)
+2026-11-09 17:12:58 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:12:58 [WARNING] [aiogram.dispatcher]: Sleep for 4.991791 seconds and try again... (tryings = 9, bot id = 9033323321)
+2026-11-09 17:13:08 [ERROR] [aiogram.dispatcher]: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-11-09 17:13:08 [WARNING] [aiogram.dispatcher]: Sleep for 5.129915 seconds and try again... (tryings = 10, bot id = 9033323321)
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:18:36
+============================================================
+2026-11-09 17:18:44 [WARNING] [atrees.listener]: Terminating existing listener instance (PID 3284) to prevent conflict...
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:19:13
+============================================================
+2026-11-09 17:19:21 [WARNING] [atrees.listener]: Terminating existing listener instance (PID 14596) to prevent conflict...
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:20:32
+============================================================
+2026-11-09 17:20:40 [WARNING] [atrees.listener]: Terminating existing listener instance (PID 13532) to prevent conflict...
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:21:01
+============================================================
+2026-11-09 17:21:09 [WARNING] [atrees.listener]: Terminating existing listener instance (PID 15896) to prevent conflict...
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:24:25
+============================================================
+2026-11-09 17:24:33 [INFO] [atrees.listener]: Starting Atrees System (Telethon Listener + Approval Bot)...
+2026-11-09 17:24:33 [INFO] [atrees.listener]: Target channels configured: ['@nafezly', '@KhamsatRequests', '@MostaqlDevelopment']
+2026-11-09 17:24:33 [INFO] [telethon.network.mtprotosender]: Connecting to 149.154.167.92:443/TcpFull...
+2026-11-09 17:24:33 [INFO] [telethon.network.mtprotosender]: Connection to 149.154.167.92:443/TcpFull complete!
+2026-11-09 17:24:34 [INFO] [atrees.listener]: Telethon Userbot logged in as: Youssef (@y_elmohamadi1)
+2026-11-09 17:24:34 [INFO] [atrees.listener]: Approval Bot initialized. Starting bot polling alongside userbot...
+2026-11-09 17:24:34 [INFO] [atrees.listener]: Atrees is fully active and listening. Press Ctrl+C to stop.
+2026-11-09 17:24:34 [INFO] [aiogram.dispatcher]: Start polling
+2026-11-09 17:24:34 [INFO] [aiogram.dispatcher]: Run polling for bot @youssef212bot id=9033323321 - 'HunterBot'
+2026-11-09 17:28:40 [WARNING] [atrees.approval_bot]: Could not answer callback query immediately (HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [The semaphore timeout period has expired]). Proceeding with submission.
+2026-11-09 17:28:41 [INFO] [aiogram.event]: Update id=91028986 is handled. Duration 21775 ms by bot id=9033323321
+2026-11-09 17:28:41 [INFO] [atrees.approval_bot]: Starting auto-submission for Job #19 (https://nafezly.com/project/57905)...
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 74-78: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\approval_bot.py", line 242, in run_submission
+    result: SubmissionResult = await submit_proposal(
+  File "W:\Atrees\submitter.py", line 385, in submit_proposal
+    logger.info(
+Message: 'Acquiring browser lock for %s (Duration: %d days, Budget: %d)...'
+Arguments: ('\u0646\u0641\u0630\u0644\u064a (Nafezly)', 3, 41)
+2026-11-09 17:28:43 [INFO] [atrees.nafezly_submitter]: [Nafezly] Navigating to project: https://nafezly.com/project/57905
+--- Logging error ---
+Traceback (most recent call last):
+  File "W:\Atrees\submitter.py", line 417, in submit_proposal
+    res = await submit_nafezly_offer(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "W:\Atrees\nafezly_submitter.py", line 98, in submit_nafezly_offer
+    await offer_textarea.wait_for(state="visible", timeout=8000)
+  File "W:\Atrees\.venv\Lib\site-packages\playwright\async_api\_generated.py", line 13591, in wait_for
+    await self._impl_obj.wait_for(state=state, timeout=to_milliseconds(timeout))
+  File "W:\Atrees\.venv\Lib\site-packages\playwright\_impl\_locator.py", line 767, in wait_for
+    await self._frame.wait_for_selector(
+        self._selector, strict=True, timeout=timeout, state=state
+    )
+  File "W:\Atrees\.venv\Lib\site-packages\playwright\_impl\_frame.py", line 395, in wait_for_selector
+    await self._channel.send(
+        "waitForSelector", self._timeout, locals_to_params(locals())
+    )
+  File "W:\Atrees\.venv\Lib\site-packages\playwright\_impl\_connection.py", line 78, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "W:\Atrees\.venv\Lib\site-packages\playwright\_impl\_connection.py", line 636, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: Locator.wait_for: Target page, context or browser has been closed
+Call log:
+  - waiting for locator("textarea#offer_description") to be visible
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 69-73: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\approval_bot.py", line 242, in run_submission
+    result: SubmissionResult = await submit_proposal(
+  File "W:\Atrees\submitter.py", line 479, in submit_proposal
+    logger.error("Submission failed on %s: %s", handler.NAME, exc, exc_info=True)
+Message: 'Submission failed on %s: %s'
+Arguments: ('\u0646\u0641\u0630\u0644\u064a (Nafezly)', TargetClosedError('Locator.wait_for: Target page, context or browser has been closed\nCall log:\n  - waiting for locator("textarea#offer_description") to be visible\n'))
+2026-11-09 17:28:57 [WARNING] [atrees.approval_bot]: Could not answer callback query immediately (HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [The semaphore timeout period has expired]). Proceeding with submission.
+2026-11-09 17:28:57 [INFO] [aiogram.event]: Update id=91028987 is handled. Duration 21269 ms by bot id=9033323321
+2026-11-09 17:28:57 [INFO] [atrees.approval_bot]: Starting auto-submission for Job #19 (https://nafezly.com/project/57905)...
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 74-78: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\approval_bot.py", line 242, in run_submission
+    result: SubmissionResult = await submit_proposal(
+  File "W:\Atrees\submitter.py", line 385, in submit_proposal
+    logger.info(
+Message: 'Acquiring browser lock for %s (Duration: %d days, Budget: %d)...'
+Arguments: ('\u0646\u0641\u0630\u0644\u064a (Nafezly)', 3, 41)
+2026-11-09 17:28:58 [INFO] [atrees.nafezly_submitter]: [Nafezly] Navigating to project: https://nafezly.com/project/57905
+2026-11-09 17:29:00 [ERROR] [atrees.nafezly_submitter]: [Nafezly] Navigation failed: Page.wait_for_timeout: Target page, context or browser has been closed
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:45:22
+============================================================
+TG_API_ID or TG_API_HASH is missing. Please ensure your .env file is properly configured.
+BOT_TOKEN is not configured or still a placeholder. Approval bot will not send messages.
+2026-11-09 17:45:29 [INFO] [atrees.listener]: Starting Atrees System (Telethon Listener + Approval Bot)...
+2026-11-09 17:45:29 [INFO] [atrees.listener]: Target channels configured: ['@nafezly', '@KhamsatRequests', '@MostaqlDevelopment']
+2026-11-09 17:45:29 [ERROR] [atrees.listener]: Missing Telegram credentials! Please set TG_API_ID and TG_API_HASH in .env
+
+============================================================
+[DASHBOARD] Starting Atrees Bot at 2026-11-09 17:49:49
+============================================================
+2026-11-09 17:49:58 [INFO] [atrees.listener]: Starting Atrees System (Telethon Listener + Approval Bot)...
+2026-11-09 17:49:58 [INFO] [atrees.listener]: Target channels configured: ['@nafezly', '@KhamsatRequests', '@MostaqlDevelopment']
+2026-11-09 17:49:58 [INFO] [telethon.network.mtprotosender]: Connecting to 149.154.167.92:443/TcpFull...
+2026-11-09 17:49:58 [INFO] [telethon.network.mtprotosender]: Connection to 149.154.167.92:443/TcpFull complete!
+2026-11-09 17:49:58 [INFO] [atrees.listener]: Telethon Userbot logged in as: Youssef (@y_elmohamadi1)
+2026-11-09 17:49:58 [INFO] [atrees.listener]: Approval Bot initialized. Starting bot polling alongside userbot...
+2026-11-09 17:49:58 [INFO] [atrees.listener]: Atrees is fully active and listening. Press Ctrl+C to stop.
+2026-11-09 17:49:58 [INFO] [aiogram.dispatcher]: Start polling
+2026-11-09 17:49:59 [INFO] [aiogram.dispatcher]: Run polling for bot @youssef212bot id=9033323321 - 'HunterBot'
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 77-81: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 39, in process_new_job
+    logger.info("Processing incoming job from '%s' (Msg: %s)...", chat_title, msg_id)
+Message: "Processing incoming job from '%s' (Msg: %s)..."
+Arguments: ('\u062e\u0645\u0633\u0627\u062a | \u0637\u0644\u0628\u0627\u062a \u0627\u0644\u062e\u062f\u0645\u0627\u062a \u063a\u064a\u0631 \u0627\u0644\u0645\u0648\u062c\u0648\u062f\u0629', 68975)
+2026-11-09 17:51:32 [INFO] [atrees.ai_engine]: Attempting job analysis via Provider: [Gemini API]...
+2026-11-09 17:51:32 [INFO] [google_genai.models]: AFC is enabled with max remote calls: 10.
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 47: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 48, in process_new_job
+    result: JobAnalysisResult | None = await evaluate_and_draft(
+  File "W:\Atrees\ai_engine.py", line 391, in evaluate_and_draft
+    return await ai_engine.evaluate_and_draft(job_text, job_url)
+  File "W:\Atrees\ai_engine.py", line 371, in evaluate_and_draft
+    logger.info("\u2705 [%s] successfully analyzed job and generated proposal.", provider_name)
+Message: '\u2705 [%s] successfully analyzed job and generated proposal.'
+Arguments: ('Gemini API',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python314\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 47: character maps to <undefined>
+Call stack:
+  File "W:\Atrees\listener.py", line 161, in <module>
+    asyncio.run(main())
+  File "C:\Python314\Lib\asyncio\runners.py", line 204, in run
+    return runner.run(main)
+  File "C:\Python314\Lib\asyncio\runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python314\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+  File "C:\Python314\Lib\asyncio\base_events.py", line 2046, in _run_once
+    handle._run()
+  File "C:\Python314\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+  File "W:\Atrees\.venv\Lib\site-packages\telethon\client\updates.py", line 605, in _dispatch_update
+    await callback(event)
+  File "W:\Atrees\listener.py", line 112, in new_message_handler
+    await process_new_job(job_data)
+  File "W:\Atrees\processor.py", line 61, in process_new_job
+    logger.info(
+Message: '\u274c [SKIPPED / NOT RELEVANT] MsgID: %s | Reason: %s'
+Arguments: (68975, '\u0627\u0644\u0645\u0634\u0631\u0648\u0639 \u064a\u062a\u0639\u0644\u0642 \u0628\u062e\u062f\u0645\u0627\u062a \u062a\u0642\u064a\u064a\u0645\u0627\u062a \u062c\u0648\u062c\u0644 (Google Reviews) \u0648\u0644\u064a\u0633 \u062a\u0637\u0648\u064a\u0631 \u0628\u0631\u0645\u062c\u064a\u0627\u062a \u0623\u0648 \u0645\u0648\u0627\u0642\u0639 \u0648\u064a\u0628.')

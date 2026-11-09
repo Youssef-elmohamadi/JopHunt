@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم عريس | Atrees Bot Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Cairo & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    .terminal-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .terminal-scroll::-webkit-scrollbar-track { background: #090d16; }
+    .terminal-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    .terminal-scroll::-webkit-scrollbar-thumb:hover { background: #334155; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 left-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Header / Top Bar -->
+  <header class="bg-slate-800/90 backdrop-blur border-b border-slate-700/80 sticky top-0 z-40 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-lg">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-black text-xl">
+        ع
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-xl font-bold tracking-tight text-white">عريس <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Atrees v2.0</span></h1>
+        </div>
+        <p class="text-xs text-slate-400 hidden sm:block">نظام صيد وتقديم عروض العمل الحر الذكي (مستقل • نفذلي • خمسات)</p>
+      </div>
+    </div>
+
+    <!-- Live Status Indicator Pill -->
+    <div class="flex items-center gap-3">
+      <div id="top-status-badge" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-300 bg-slate-800 text-slate-400 border-slate-700">
+        <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+        <span id="top-status-text">جارٍ الفحص...</span>
+      </div>
+
+      <!-- Quick Action / Open Telegram -->
+      <a href="https://web.telegram.org" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-700/70 hover:bg-slate-700 text-slate-200 border border-slate-600 transition">
+        <span>فتح تيليجرام</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto p-4 lg:p-6 gap-6">
+
+    <!-- Sidebar / Navigation Tabs -->
+    <aside class="w-full md:w-64 flex-shrink-0">
+      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3 shadow-md sticky top-24">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 px-3 py-2">القوائم والتحكم</div>
+        <nav class="space-y-1.5" id="nav-tabs">
+          
+          <button onclick="switchTab('controller')" id="tab-btn-controller" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition text-white bg-emerald-600/90 shadow-md shadow-emerald-900/30">
+            <svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <span>لوحة تشغيل البوت</span>
+          </button>
+
+          <button onclick="switchTab('profile')" id="tab-btn-profile" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-700/60">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <span>الملف الشخصي (Profile)</span>
+          </button>
+
+          <button onclick="switchTab('api')" id="tab-btn-api" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-700/60">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+            <span>مفاتيح الـ API والإعدادات</span>
+          </button>
+
+        </nav>
+
+        <!-- System Summary Mini Box -->
+        <div class="mt-6 pt-4 border-t border-slate-700/60 px-3 text-xs text-slate-400 space-y-2">
+          <div class="flex justify-between">
+            <span>محرك الذكاء:</span>
+            <span class="text-emerald-400 font-mono font-medium">Gemini + Groq</span>
+          </div>
+          <div class="flex justify-between">
+            <span>المتصفح:</span>
+            <span class="text-slate-300 font-mono">Chrome Persistent</span>
+          </div>
+          <div class="flex justify-between">
+            <span>المنصات:</span>
+            <span class="text-slate-300">مستقل، نفذلي، خمسات</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="flex-1 min-w-0">
+
+      <!-- =================================================================== -->
+      <!-- TAB 1: BOT CONTROLLER & LIVE LOGS -->
+      <!-- =================================================================== -->
+      <section id="section-controller" class="space-y-6">
+        
+        <!-- Big Hero Control Card -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-800/90 border border-slate-700/80 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div class="absolute -top-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span id="controller-status-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-700 text-slate-300">
+                  <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                  <span>متوقف</span>
+                </span>
+                <span id="controller-pid" class="text-xs font-mono text-slate-400"></span>
+              </div>
+              <h2 class="text-2xl font-black text-white">تشغيل نظام عريس الذكي</h2>
+              <p class="text-sm text-slate-300 mt-1">يراقب القنوات بشكل لحظي، يحلل المشاريع فوراً، ويرسل لك إشعارات الموافقة بضغطة زر على تيليجرام.</p>
+            </div>
+
+            <!-- Big Start/Stop Button -->
+            <button id="btn-toggle-bot" onclick="toggleBot()" class="w-full sm:w-auto px-8 py-4 rounded-xl font-black text-lg transition-all duration-200 transform active:scale-95 shadow-xl flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/40">
+              <svg id="btn-toggle-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span id="btn-toggle-label">بدء تشغيل البوت</span>
+            </button>
+          </div>
+
+          <!-- Quick Metrics Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-slate-700/60 text-center">
+            <div class="bg-slate-900/40 rounded-xl p-3 border border-slate-700/40">
+              <span class="block text-xs text-slate-400">حالة المستمع (Listener)</span>
+              <span id="metric-listener" class="font-bold text-sm text-slate-200 mt-0.5 block font-mono">غير متصل</span>
+            </div>
+            <div class="bg-slate-900/40 rounded-xl p-3 border border-slate-700/40">
+              <span class="block text-xs text-slate-400">مدة العمل المستمر (Uptime)</span>
+              <span id="metric-uptime" class="font-bold text-sm text-slate-200 mt-0.5 block font-mono">--</span>
+            </div>
+            <div class="bg-slate-900/40 rounded-xl p-3 border border-slate-700/40">
+              <span class="block text-xs text-slate-400">محرك التحليل الاحتياطي</span>
+              <span class="font-bold text-sm text-emerald-400 mt-0.5 block">Failover مفعل</span>
+            </div>
+            <div class="bg-slate-900/40 rounded-xl p-3 border border-slate-700/40">
+              <span class="block text-xs text-slate-400">التقديم التلقائي الذكي</span>
+              <span class="font-bold text-sm text-teal-300 mt-0.5 block">Playwright جاهز</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Console Card -->
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[520px]">
+          <!-- Terminal Header -->
+          <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+              </div>
+              <span class="text-xs font-mono font-semibold text-slate-400 mr-2 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                السجلات الحية (Live Console Logs)
+              </span>
+            </div>
+
+            <!-- Terminal Actions -->
+            <div class="flex items-center gap-2 text-xs">
+              <label class="flex items-center gap-1.5 text-slate-400 cursor-pointer select-none hover:text-slate-200">
+                <input type="checkbox" id="auto-scroll-toggle" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0">
+                <span>تمرير تلقائي</span>
+              </label>
+
+              <button onclick="fetchLogs(true)" title="تحديث السجلات" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              </button>
+
+              <button onclick="clearTerminalView()" title="مسح الشاشة" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Terminal Content Box -->
+          <div id="terminal-body" class="flex-1 p-4 font-mono text-xs overflow-y-auto terminal-scroll bg-[#0b0f19] space-y-1 select-text">
+            <div class="text-slate-500">[INFO] جارٍ تحميل سجلات البوت...</div>
+          </div>
+
+          <!-- Terminal Footer Status Bar -->
+          <div class="bg-slate-900/80 px-4 py-2 border-t border-slate-800 text-[11px] font-mono text-slate-500 flex items-center justify-between">
+            <span id="terminal-lines-count">عدد الأسطر: 0</span>
+            <span id="terminal-last-updated">آخر تحديث: --:--:--</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 2: PROFILE MANAGER -->
+      <!-- =================================================================== -->
+      <section id="section-profile" class="hidden space-y-6">
+        
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
+          <div class="border-b border-slate-700/60 pb-4 mb-6">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">👤</span>
+              الملف المهني للمستقل (Freelancer Profile)
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">يستخدم نموذج الذكاء الاصطناعي هذه البيانات لصياغة العروض المخصصة باسمك وخبراتك وتقنياتك الفعلية.</p>
+          </div>
+
+          <form id="form-profile" onsubmit="saveProfile(event)" class="space-y-5">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- Name -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">اسمك أو هويتك المهنية (Name)</label>
+                <input type="text" id="prof-name" required placeholder="مثال: يوسف المحمدي" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                <span class="text-[11px] text-slate-400 mt-1 block">يظهر في بداية العروض إذا رغبت.</span>
+              </div>
+
+              <!-- Professional Title -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">المسمى الوظيفي (Job Title)</label>
+                <input type="text" id="prof-title" required placeholder="مثال: Senior Full-Stack Web Developer (.NET & React)" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                <span class="text-[11px] text-slate-400 mt-1 block">يحدد هوية ومجال مهنتك بدقة.</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <!-- Years of Experience -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">سنوات الخبرة (Years of Exp)</label>
+                <input type="number" id="prof-exp" min="1" max="30" required value="5" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Tech Stack (Skills) -->
+              <div class="md:col-span-2">
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">المهارات والتقنيات (Skills - مفصولة بفواصل)</label>
+                <input type="text" id="prof-skills" required placeholder="مثال: React, Next.js, .NET Core, Node.js, Tailwind CSS, SQL" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                <span class="text-[11px] text-slate-400 mt-1 block">افصل المهارات بفاصلة (مثال: React, Next.js, C#).</span>
+              </div>
+            </div>
+
+            <!-- Custom Instructions / Tone of Voice -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">تعليمات ونبرة العرض الخاصة (Custom Instructions / Tone of Voice)</label>
+              <textarea id="prof-instructions" rows="4" placeholder="مثال: تحدث بصوت مطور أول مصري واثق، ادخل مباشرة في الحل التقني بدون مقدمات كليشيهات، اذكر تفضيل الكود النظيف، واختم دائماً بسؤال تقني ذكي." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-emerald-500 transition font-sans"></textarea>
+              <span class="text-[11px] text-slate-400 mt-1 block">يوجه الذكاء الاصطناعي لكتابة مقترحات تفصيلية تناسب أسلوبك تماماً.</span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-3 flex justify-end">
+              <button type="submit" id="btn-save-profile" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-sm text-white transition flex items-center gap-2 shadow-lg shadow-emerald-900/30">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>حفظ بيانات الملف الشخصي</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 3: API CONFIGURATIONS (.env) -->
+      <!-- =================================================================== -->
+      <section id="section-api" class="hidden space-y-6">
+
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
+          <div class="border-b border-slate-700/60 pb-4 mb-6">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">⚙️</span>
+              مفاتيح الربط والـ API (.env Configuration)
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">قم بملء مفاتيح التيليجرام والذكاء الاصطناعي دون الحاجة لتعديل أي ملف نصي أو كود برمجي.</p>
+          </div>
+
+          <form id="form-env" onsubmit="saveEnv(event)" class="space-y-6">
+
+            <!-- Freelance Platforms Session Banner -->
+            <div class="bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>🔐 تسجيل الدخول لحسابات العمل الحر (مستقل • نفذلي • خمسات)</span>
+                </h4>
+                <p class="text-xs text-slate-300 mt-1">يتم تسجيل الدخول لمرة واحدة فقط بأمان لحفظ الجلسة في المتصفح المحلي (browser_session) دون تخزين كلمات السر في ملفات كود.</p>
+              </div>
+              <button type="button" onclick="openLoginBrowser()" class="whitespace-nowrap px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-900/40">
+                <span>فتح المتصفح لتسجيل الدخول</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </button>
+            </div>
+
+            <!-- Group 1: Telegram Userbot & Notification Bot -->
+            <div class="space-y-4">
+              <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                <span>1. إعدادات حساب وبوت تيليجرام (Telegram)</span>
+              </h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Telegram API ID</label>
+                  <input type="text" id="env-tg-id" required placeholder="مثال: 12345678" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">من <a href="https://my.telegram.org" target="_blank" class="text-emerald-400 underline">my.telegram.org</a></span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Telegram API Hash</label>
+                  <input type="text" id="env-tg-hash" required placeholder="مثال: 7378861b2704384ebcb772..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">من <a href="https://my.telegram.org" target="_blank" class="text-emerald-400 underline">my.telegram.org</a></span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Bot Token (من BotFather)</label>
+                  <input type="password" id="env-bot-token" required placeholder="مثال: 9033323321:AAF_YxG..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">رمز التوكن الخاص ببوت الموافقات من @BotFather.</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">My Chat ID (معرف حسابك لاستلام العروض)</label>
+                  <input type="text" id="env-chat-id" required placeholder="مثال: 6745928157" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">معرف حسابك الشخصي (احصل عليه من بوت @userinfobot).</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">قنوات الرصد والمراقبة (Target Channels)</label>
+                <input type="text" id="env-channels" required placeholder="@nafezly,@KhamsatRequests,@MostaqlDevelopment" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                <span class="text-[11px] text-slate-400 mt-1 block">يوزرات القنوات مفصولة بفاصلة.</span>
+              </div>
+            </div>
+
+            <!-- Group 2: AI Engine Keys -->
+            <div class="space-y-4 pt-4 border-t border-slate-700/60">
+              <h3 class="text-sm font-bold text-teal-400 flex items-center gap-2">
+                <span>2. مفاتيح الذكاء الاصطناعي (AI Providers - مجانية 100%)</span>
+              </h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Google Gemini API Key</label>
+                  <input type="password" id="env-gemini-key" placeholder="AIzaSy..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">من <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-teal-400 underline">Google AI Studio (مجاني)</a></span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Gemini Model</label>
+                  <input type="text" id="env-gemini-model" value="gemini-3.1-flash-lite" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">الافتراضي: gemini-3.1-flash-lite</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Groq API Key (المزود الاحتياطي السريع)</label>
+                  <input type="password" id="env-groq-key" placeholder="gsk_..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">من <a href="https://console.groq.com/keys" target="_blank" class="text-teal-400 underline">console.groq.com (مجاني وسريع)</a></span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Groq Model</label>
+                  <input type="text" id="env-groq-model" value="openai/gpt-oss-120b" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <span class="text-[11px] text-slate-400 mt-1 block">الافتراضي: openai/gpt-oss-120b أو qwen/qwen3.8-27b</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group 3: Automation Preferences -->
+            <div class="space-y-4 pt-4 border-t border-slate-700/60">
+              <h3 class="text-sm font-bold text-sky-400 flex items-center gap-2">
+                <span>3. خيارات متصفح التقديم التلقائي (Playwright / Chrome)</span>
+              </h3>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="flex items-center gap-3 p-3.5 bg-slate-900/60 border border-slate-700 rounded-xl cursor-pointer hover:border-slate-600 transition">
+                  <input type="checkbox" id="env-headless" class="w-5 h-5 rounded bg-slate-800 border-slate-600 text-emerald-500 focus:ring-0">
+                  <div>
+                    <span class="block text-sm font-semibold text-slate-200">الوضع الصامت للمتصفح (Headless)</span>
+                    <span class="block text-xs text-slate-400">إذا تم تفعيله، لن تظهر نافذة كروم عند التقديم.</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center gap-3 p-3.5 bg-slate-900/60 border border-slate-700 rounded-xl cursor-pointer hover:border-slate-600 transition">
+                  <input type="checkbox" id="env-autosubmit" class="w-5 h-5 rounded bg-slate-800 border-slate-600 text-emerald-500 focus:ring-0">
+                  <div>
+                    <span class="block text-sm font-semibold text-slate-200">التأكيد الفوري التلقائي (Auto Submit)</span>
+                    <span class="block text-xs text-slate-400">إرسال العرض مباشرة دون انتظار مراجعة يدوية إضافية.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="pt-4 flex justify-end">
+              <button type="submit" id="btn-save-env" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-sm text-white transition flex items-center gap-2 shadow-lg shadow-emerald-900/30">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>حفظ مفاتيح وإعدادات الـ .env</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Toast Notification Template Script & App Logic -->
+  <script>
+    // Global State
+    let currentBotState = { running: false, pid: null, uptime: null };
+    let pollInterval = null;
+    let isToggling = false;
+
+    // -----------------------------------------------------------------------
+    // UI Helpers & Tab Switching
+    // -----------------------------------------------------------------------
+    function switchTab(tabName) {
+      const tabs = ['controller', 'profile', 'api'];
+      tabs.forEach(t => {
+        const sec = document.getElementById(`section-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tabName) {
+          sec.classList.remove('hidden');
+          btn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-bold transition text-white bg-emerald-600/90 shadow-md shadow-emerald-900/30";
+          btn.querySelector('svg').classList.add('text-emerald-200');
+          btn.querySelector('svg').classList.remove('text-slate-400');
+        } else {
+          sec.classList.add('hidden');
+          btn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-700/60";
+          btn.querySelector('svg').classList.remove('text-emerald-200');
+          btn.querySelector('svg').classList.add('text-slate-400');
+        }
+      });
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColors = {
+        success: 'bg-emerald-600 border-emerald-500 text-white',
+        error: 'bg-rose-600 border-rose-500 text-white',
+        warning: 'bg-amber-600 border-amber-500 text-white',
+        info: 'bg-slate-700 border-slate-600 text-white'
+      };
+
+      toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-2xl flex items-center gap-3 text-sm font-semibold transition-all duration-300 transform -translate-y-2 opacity-0 ${bgColors[type] || bgColors.info}`;
+      toast.innerHTML = `
+        <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+        <span>${message}</span>
+      `;
+
+      container.appendChild(toast);
+
+      // Animate in
+      setTimeout(() => {
+        toast.classList.remove('-translate-y-2', 'opacity-0');
+      }, 10);
+
+      // Remove after 3.5s
+      setTimeout(() => {
+        toast.classList.add('-translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // -----------------------------------------------------------------------
+    // Profile API
+    // -----------------------------------------------------------------------
+    async function loadProfile() {
+      try {
+        const res = await fetch('/api/profile');
+        if (!res.ok) throw new Error('فشل قراءة الملف الشخصي');
+        const data = await res.json();
+        
+        document.getElementById('prof-name').value = data.name || '';
+        document.getElementById('prof-title').value = data.title || '';
+        document.getElementById('prof-exp').value = data.years_of_experience || 5;
+        document.getElementById('prof-skills').value = data.tech_stack_str || (Array.isArray(data.tech_stack) ? data.tech_stack.join(', ') : '');
+        document.getElementById('prof-instructions').value = data.custom_instructions || data.tone_of_voice || '';
+      } catch (err) {
+        console.error('loadProfile error:', err);
+      }
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-profile');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> <span>جارٍ الحفظ...</span>`;
+
+      const payload = {
+        name: document.getElementById('prof-name').value,
+        title: document.getElementById('prof-title').value,
+        years_of_experience: parseInt(document.getElementById('prof-exp').value) || 5,
+        tech_stack: document.getElementById('prof-skills').value,
+        custom_instructions: document.getElementById('prof-instructions').value
+      };
+
+      try {
+        const res = await fetch('/api/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(data.message || 'تم حفظ بيانات الملف الشخصي بنجاح!', 'success');
+        } else {
+          throw new Error(data.detail || data.message || 'فشل الحفظ');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>حفظ بيانات الملف الشخصي</span>`;
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // Environment (.env) API
+    // -----------------------------------------------------------------------
+    async function loadEnv() {
+      try {
+        const res = await fetch('/api/env');
+        if (!res.ok) throw new Error('فشل قراءة ملف .env');
+        const data = await res.json();
+
+        document.getElementById('env-tg-id').value = data.TG_API_ID || '';
+        document.getElementById('env-tg-hash').value = data.TG_API_HASH || '';
+        document.getElementById('env-channels').value = data.TARGET_CHANNELS || '@nafezly,@KhamsatRequests,@MostaqlDevelopment';
+        document.getElementById('env-bot-token').value = data.BOT_TOKEN || '';
+        document.getElementById('env-chat-id').value = data.MY_CHAT_ID || '';
+        document.getElementById('env-gemini-key').value = data.GEMINI_API_KEY || '';
+        document.getElementById('env-gemini-model').value = data.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+        document.getElementById('env-groq-key').value = data.GROQ_API_KEY || '';
+        document.getElementById('env-groq-model').value = data.GROQ_MODEL || 'openai/gpt-oss-120b';
+
+        document.getElementById('env-headless').checked = String(data.BROWSER_HEADLESS).toLowerCase() === 'true';
+        document.getElementById('env-autosubmit').checked = String(data.AUTO_SUBMIT_CONFIRM).toLowerCase() === 'true';
+      } catch (err) {
+        console.error('loadEnv error:', err);
+      }
+    }
+
+    async function saveEnv(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-env');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> <span>جارٍ الحفظ...</span>`;
+
+      const payload = {
+        TG_API_ID: document.getElementById('env-tg-id').value.trim(),
+        TG_API_HASH: document.getElementById('env-tg-hash').value.trim(),
+        TARGET_CHANNELS: document.getElementById('env-channels').value.trim(),
+        BOT_TOKEN: document.getElementById('env-bot-token').value.trim(),
+        MY_CHAT_ID: document.getElementById('env-chat-id').value.trim(),
+        GEMINI_API_KEY: document.getElementById('env-gemini-key').value.trim(),
+        GEMINI_MODEL: document.getElementById('env-gemini-model').value.trim(),
+        GROQ_API_KEY: document.getElementById('env-groq-key').value.trim(),
+        GROQ_MODEL: document.getElementById('env-groq-model').value.trim(),
+        BROWSER_HEADLESS: document.getElementById('env-headless').checked ? 'true' : 'false',
+        AUTO_SUBMIT_CONFIRM: document.getElementById('env-autosubmit').checked ? 'true' : 'false'
+      };
+
+      try {
+        const res = await fetch('/api/env', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(data.message || 'تم حفظ مفاتيح وإعدادات الـ .env بنجاح!', 'success');
+        } else {
+          throw new Error(data.detail || data.message || 'فشل الحفظ');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>حفظ مفاتيح وإعدادات الـ .env</span>`;
+      }
+    }
+
+    async function openLoginBrowser() {
+      try {
+        showToast("جارٍ فتح متصفح Chrome لتسجيل الدخول...", "info");
+        const res = await fetch('/api/browser/open-login', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast(data.message, "success");
+        } else {
+          showToast(data.detail || "فشل فتح المتصفح", "error");
+        }
+      } catch (err) {
+        showToast("خطأ: " + err.message, "error");
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // Bot Status & Process Control
+    // -----------------------------------------------------------------------
+    function renderStatus(statusData) {
+      currentBotState = statusData;
+      const isRunning = Boolean(statusData && statusData.running);
+
+      // Top bar badge
+      const topBadge = document.getElementById('top-status-badge');
+      const topText = document.getElementById('top-status-text');
+      
+      // Controller card elements
+      const pill = document.getElementById('controller-status-pill');
+      const pidText = document.getElementById('controller-pid');
+      const btn = document.getElementById('btn-toggle-bot');
+      const btnLabel = document.getElementById('btn-toggle-label');
+      const btnIcon = document.getElementById('btn-toggle-icon');
+      const metricListener = document.getElementById('metric-listener');
+      const metricUptime = document.getElementById('metric-uptime');
+
+      if (isRunning) {
+        topBadge.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-300 bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+        topBadge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span><span>البوت يعمل (نشط)</span>`;
+
+        pill.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        pill.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span>يعمل بنشاط</span>`;
+
+        pidText.textContent = `PID: ${statusData.pid || '--'}`;
+
+        btn.className = "w-full sm:w-auto px-8 py-4 rounded-xl font-black text-lg transition-all duration-200 transform active:scale-95 shadow-xl flex items-center justify-center gap-3 bg-rose-600 hover:bg-rose-500 text-white shadow-rose-900/40";
+        btnLabel.textContent = "إيقاف البوت";
+        btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>`;
+
+        metricListener.textContent = "متصل وينصت 🟢";
+        metricListener.className = "font-bold text-sm text-emerald-400 mt-0.5 block font-mono";
+
+        const seconds = statusData.uptime_seconds || 0;
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        metricUptime.textContent = `${mins}m ${secs}s`;
+      } else {
+        topBadge.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-300 bg-slate-800 text-slate-400 border-slate-700";
+        topBadge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span><span>البوت متوقف</span>`;
+
+        pill.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-700/60 text-slate-300 border border-slate-600";
+        pill.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-400"></span><span>متوقف حالياً</span>`;
+
+        pidText.textContent = '';
+
+        btn.className = "w-full sm:w-auto px-8 py-4 rounded-xl font-black text-lg transition-all duration-200 transform active:scale-95 shadow-xl flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/40";
+        btnLabel.textContent = "بدء تشغيل البوت";
+        btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>`;
+
+        metricListener.textContent = "متوقف 🔴";
+        metricListener.className = "font-bold text-sm text-rose-400 mt-0.5 block font-mono";
+        metricUptime.textContent = "--";
+      }
+    }
+
+    async function fetchBotStatus() {
+      try {
+        const res = await fetch('/api/bot/status');
+        if (res.ok) {
+          const data = await res.json();
+          renderStatus(data);
+        }
+      } catch (err) {
+        console.error('fetchBotStatus error:', err);
+      }
+    }
+
+    async function toggleBot() {
+      if (isToggling) return;
+      isToggling = true;
+
+      const btn = document.getElementById('btn-toggle-bot');
+      const btnLabel = document.getElementById('btn-toggle-label');
+      const originalText = btnLabel.textContent;
+      btn.disabled = true;
+      btnLabel.textContent = "جارٍ المعالجة...";
+
+      const action = currentBotState.running ? 'stop' : 'start';
+
+      try {
+        const res = await fetch(`/api/bot/${action}`, { method: 'POST' });
+        const data = await res.json();
+        
+        if (data.success) {
+          showToast(data.message, 'success');
+          // Refresh status and logs immediately
+          await fetchBotStatus();
+          await fetchLogs(true);
+        } else {
+          showToast(data.message || 'حدث خطأ أثناء تنفيذ الأمر', 'error');
+        }
+      } catch (err) {
+        showToast('تعذر الاتصال بخادم لوحة التحكم: ' + err.message, 'error');
+      } finally {
+        isToggling = false;
+        btn.disabled = false;
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // Terminal Log Viewer
+    // -----------------------------------------------------------------------
+    function formatLogLine(rawLine) {
+      if (!rawLine) return '';
+      let escaped = rawLine.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+      if (escaped.includes('[ERROR]')) {
+        return `<div class="text-rose-400 font-semibold bg-rose-950/20 px-1 rounded">${escaped}</div>`;
+      } else if (escaped.includes('[WARNING]')) {
+        return `<div class="text-amber-300 font-medium">${escaped}</div>`;
+      } else if (escaped.includes('[INFO]')) {
+        return `<div class="text-slate-300"><span class="text-emerald-400/90 font-semibold">[INFO]</span> ${escaped.replace(/.*?\[INFO\]:?/, '')}</div>`;
+      } else if (escaped.includes('===')) {
+        return `<div class="text-teal-400 font-bold border-y border-teal-900/40 my-1 py-0.5">${escaped}</div>`;
+      }
+      return `<div class="text-slate-400">${escaped}</div>`;
+    }
+
+    async function fetchLogs(forceScroll = false) {
+      try {
+        const res = await fetch('/api/bot/logs?lines=60');
+        if (!res.ok) return;
+        const data = await res.json();
+        const lines = data.lines || [];
+
+        const terminalBody = document.getElementById('terminal-body');
+        if (lines.length === 0) {
+          terminalBody.innerHTML = `<div class="text-slate-500">[INFO] لا توجد سجلات مسجلة بعد.</div>`;
+        } else {
+          terminalBody.innerHTML = lines.map(l => formatLogLine(l)).join('');
+        }
+
+        document.getElementById('terminal-lines-count').textContent = `عدد الأسطر: ${lines.length}`;
+        const now = new Date();
+        document.getElementById('terminal-last-updated').textContent = `آخر تحديث: ${now.toLocaleTimeString()}`;
+
+        // Auto-scroll if enabled or forced
+        const autoScroll = document.getElementById('auto-scroll-toggle').checked;
+        if (autoScroll || forceScroll) {
+          terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        // Also sync status if returned with logs
+        if (data.status) {
+          renderStatus(data.status);
+        }
+      } catch (err) {
+        console.error('fetchLogs error:', err);
+      }
+    }
+
+    function clearTerminalView() {
+      const terminalBody = document.getElementById('terminal-body');
+      terminalBody.innerHTML = `<div class="text-slate-500">[INFO] تم مسح شاشة السجلات المؤقتة (الملف محفوظ بالأصل).</div>`;
+      document.getElementById('terminal-lines-count').textContent = `عدد الأسطر: 0`;
+    }
+
+    // -----------------------------------------------------------------------
+    // Initialization & Heartbeat Polling
+    // -----------------------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', async () => {
+      // 1. Load data
+      await Promise.all([loadProfile(), loadEnv(), fetchBotStatus(), fetchLogs(true)]);
+
+      // 2. Poll status and logs every 2.5 seconds
+      pollInterval = setInterval(async () => {
+        await fetchBotStatus();
+        // Only fetch logs continuously if the bot controller tab is visible or bot is running
+        const controllerVisible = !document.getElementById('section-controller').classList.contains('hidden');
+        if (controllerVisible || currentBotState.running) {
+          await fetchLogs(false);
+        }
+      }, 2500);
+    });
+  </script>
+
+</body>
+</html>
+

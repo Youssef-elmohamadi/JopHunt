@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.session
+*.session-journal
+.env
+jobs.db
+browser_session/
+screenshots/
+logs/
