@@ -1,10 +1,31 @@
+import io
+import html
 import logging
+import sys
 from typing import Any
+from config import config
 from ai_engine import evaluate_and_draft, JobAnalysisResult
 import database
 import approval_bot
 from approval_bot import send_job_for_approval, get_platform_name
 from scraper import scraper
+
+# Force stdout/stderr to UTF-8 on Windows to safely print emojis (🔥, 🏢, etc.)
+if sys.platform == "win32":
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        elif sys.stdout is not None:
+            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+    try:
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        elif sys.stderr is not None:
+            sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 logger = logging.getLogger("atrees.processor")
 
@@ -63,20 +84,20 @@ async def process_new_job(job_data: dict[str, Any]) -> None:
             msg_id,
             result.reason,
         )
-        # If manually submitted for testing, inform user of rejection reason
-        if is_manual and approval_bot.bot and config.my_chat_id:
+        # If manually submitted for testing (or sent directly to bot), inform user of rejection reason
+        target_chat = chat_id if (is_manual and chat_id and str(chat_id).isdigit()) else getattr(config, "my_chat_id", None)
+        if is_manual and approval_bot.bot and target_chat:
             try:
-                import html
                 rejection_msg = (
-                    f"⚠️ <b>المشروع غير مطابق لمعايير القبول:</b>\n\n"
-                    f"💡 <b>سبب الرفض:</b> {html.escape(result.reason)}"
+                    f"⚠️ <b>المشروع غير مطابق لمعايير القبول (تم استبعاده):</b>\n\n"
+                    f"💡 <b>سبب الرفض والفلترة:</b>\n{html.escape(result.reason)}"
                 )
                 await approval_bot.bot.send_message(
-                    chat_id=config.my_chat_id,
+                    chat_id=target_chat,
                     text=rejection_msg,
                 )
-            except Exception:
-                pass
+            except Exception as notify_err:
+                logger.warning("Could not send rejection message to user: %s", notify_err)
         return
 
     # Detect platform name
@@ -99,18 +120,21 @@ async def process_new_job(job_data: dict[str, Any]) -> None:
     # 6. Print to Terminal
     separator = "=" * 65
     print(f"\n{separator}")
-    print(f"🔥 [JOB MATCH DETECTED & SAVED: #{job_id}] 🔥")
-    print(f"🏢 Platform: {platform}")
-    print(f"📍 Source: {chat_title} (ID: {chat_id}) | MsgID: {msg_id}")
-    print(f"🕒 Time: {timestamp}")
-    if primary_url:
-        print(f"🔗 Project Link: {primary_url}")
-    print(f"💡 Fit Reason: {result.reason}")
-    print(f"💰 Suggested Budget/Timeline: {result.estimated_budget}")
-    print(f"{'-' * 65}")
-    print("✍️ Tailored Proposal (Arabic):")
-    print(result.proposal_arabic)
-    print(f"{separator}\n")
+    try:
+        print(f"🔥 [JOB MATCH DETECTED & SAVED: #{job_id}] 🔥")
+        print(f"🏢 Platform: {platform}")
+        print(f"📍 Source: {chat_title} (ID: {chat_id}) | MsgID: {msg_id}")
+        print(f"🕒 Time: {timestamp}")
+        if primary_url:
+            print(f"🔗 Project Link: {primary_url}")
+        print(f"💡 Fit Reason: {result.reason}")
+        print(f"💰 Suggested Budget/Timeline: {result.estimated_budget}")
+        print(f"{'-' * 65}")
+        print("✍️ Tailored Proposal (Arabic):")
+        print(result.proposal_arabic)
+        print(f"{separator}\n")
+    except Exception as print_exc:
+        logger.warning("Console print warning (non-critical): %s", print_exc)
 
     # 7. Send Approval Alert to Telegram with Inline Keyboard ('قدّم' / 'تخطي')
     bot_msg_id = await send_job_for_approval(job_id)

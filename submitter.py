@@ -16,6 +16,8 @@ from playwright.async_api import Page, async_playwright
 
 from config import config
 from nafezly_submitter import submit_nafezly_offer
+from mostaql_submitter import submit_mostaql_offer
+from khamsat_submitter import submit_khamsat_offer
 
 logger = logging.getLogger("atrees.submitter")
 
@@ -430,6 +432,46 @@ async def submit_proposal(
                         before_screenshot=res.get("before_screenshot"),
                         after_screenshot=res.get("after_screenshot"),
                         clamped_cost=res.get("clamped_cost"),
+                        submitted_at=time.time() if res["success"] else None,
+                    )
+
+                # If Mostaql, delegate to dedicated submit_mostaql_offer module with dynamic question answering
+                if handler == MostaqlHandler:
+                    res = await submit_mostaql_offer(
+                        page=page,
+                        job_url=job_url,
+                        period_days=duration_days,
+                        proposed_cost=budget_amount,
+                        proposal_text=proposal_text,
+                        project_context=job_text,
+                    )
+                    await context.close()
+                    return SubmissionResult(
+                        success=res["success"],
+                        platform=handler.NAME,
+                        message=res["message"],
+                        screenshot_path=res.get("after_screenshot") or res.get("before_screenshot"),
+                        before_screenshot=res.get("before_screenshot"),
+                        after_screenshot=res.get("after_screenshot"),
+                        clamped_cost=res.get("clamped_cost"),
+                        submitted_at=time.time() if res["success"] else None,
+                    )
+
+                # If Khamsat, delegate to dedicated submit_khamsat_offer module
+                if handler == KhamsatHandler:
+                    res = await submit_khamsat_offer(
+                        page=page,
+                        job_url=job_url,
+                        proposal_text=proposal_text,
+                    )
+                    await context.close()
+                    return SubmissionResult(
+                        success=res["success"],
+                        platform=handler.NAME,
+                        message=res["message"],
+                        screenshot_path=res.get("after_screenshot") or res.get("before_screenshot"),
+                        before_screenshot=res.get("before_screenshot"),
+                        after_screenshot=res.get("after_screenshot"),
                         submitted_at=time.time() if res["success"] else None,
                     )
 

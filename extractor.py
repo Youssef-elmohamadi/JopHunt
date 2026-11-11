@@ -67,15 +67,41 @@ def extract_urls_from_message(message: Any) -> list[str]:
             match = f"https://{match}"
         add_url(match)
 
-    # 3. Extract from buttons and reply_markup (Telethon and Aiogram inline buttons)
+    # 3. Extract from buttons and reply_markup (Telethon v1/v2 and Aiogram inline buttons)
+    def _extract_from_btn(btn: Any):
+        if not btn:
+            return
+        # Standard .url attribute
+        u = getattr(btn, "url", None)
+        if u:
+            add_url(u)
+            return
+        # Telethon 2.x structure: btn.type.url (InlineButtonTypeUrl)
+        b_type = getattr(btn, "type", None)
+        if b_type:
+            u2 = getattr(b_type, "url", None)
+            if u2:
+                add_url(u2)
+                return
+        # Button data or text containing URL
+        data_attr = getattr(btn, "data", None)
+        if isinstance(data_attr, (bytes, bytearray)):
+            try:
+                decoded = data_attr.decode("utf-8", errors="ignore")
+                for m in URL_REGEX.findall(decoded):
+                    add_url(m)
+            except Exception:
+                pass
+
     buttons = getattr(message, "buttons", None)
     if buttons:
         try:
             for row in buttons:
-                for btn in row:
-                    btn_url = getattr(btn, "url", None)
-                    if btn_url:
-                        add_url(btn_url)
+                if isinstance(row, (list, tuple)):
+                    for btn in row:
+                        _extract_from_btn(btn)
+                else:
+                    _extract_from_btn(row)
         except Exception:
             pass
 
@@ -87,9 +113,7 @@ def extract_urls_from_message(message: Any) -> list[str]:
             try:
                 for row in inline_kb:
                     for btn in row:
-                        btn_url = getattr(btn, "url", None)
-                        if btn_url:
-                            add_url(btn_url)
+                        _extract_from_btn(btn)
             except Exception:
                 pass
         # Telethon reply_markup rows
@@ -98,9 +122,7 @@ def extract_urls_from_message(message: Any) -> list[str]:
             try:
                 for row in rows:
                     for btn in getattr(row, "buttons", []):
-                        btn_url = getattr(btn, "url", None)
-                        if btn_url:
-                            add_url(btn_url)
+                        _extract_from_btn(btn)
             except Exception:
                 pass
 
@@ -108,14 +130,28 @@ def extract_urls_from_message(message: Any) -> list[str]:
 
 
 def filter_target_platform_urls(urls: list[str]) -> list[str]:
-    """Filters URLs to those matching target freelance platforms: Mostaql, Khamsat, or Nafezly."""
+    """
+    Filters and prioritizes URLs to those matching target freelance platforms:
+    Mostaql, Khamsat, or Nafezly.
+    Crucially prioritizes actual project/request URLs over user profile URLs!
+    """
     matching: list[str] = []
+    user_profiles: list[str] = []
+
     for url in urls:
         try:
             parsed = urlparse(url)
             hostname = (parsed.hostname or "").lower()
+            path = (parsed.path or "").lower()
+
             if any(domain in hostname for domain in TARGET_DOMAINS):
-                matching.append(url)
+                # Deprioritize user profile links (e.g., khamsat.com/user/xyz or mostaql.com/u/xyz)
+                if "/user/" in path or path.startswith("/u/"):
+                    user_profiles.append(url)
+                else:
+                    matching.append(url)
         except Exception:
             continue
-    return matching
+
+    # Return request/project URLs first, profiles only as last resort
+    return matching if matching else user_profiles

@@ -429,12 +429,19 @@ def update_env(env_data: EnvModel) -> Dict[str, Any]:
     data_dict = env_data.model_dump(exclude_unset=False)
 
     try:
+        # Load existing .env values first so we only update values that were actually provided
+        existing_vals = dotenv_values(ENV_FILE) if ENV_FILE.exists() else {}
+
         for key, value in data_dict.items():
             if value is not None:
+                str_val = str(value).strip()
+                # If value is empty string and key already exists with value, don't accidentally wipe it
+                if str_val == "" and key in existing_vals and existing_vals[key]:
+                    continue
                 # Set in .env file cleanly
-                set_key(str(ENV_FILE), key, str(value).strip(), quote_mode="never")
+                set_key(str(ENV_FILE), key, str_val, quote_mode="never")
                 # Also update current process os.environ
-                os.environ[key] = str(value).strip()
+                os.environ[key] = str_val
 
         logger.info("Updated .env file successfully.")
         return {"success": True, "message": "تم حفظ إعدادات المفاتيح والـ API بنجاح!"}

@@ -328,13 +328,13 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-semibold text-slate-300 mb-1">Telegram API ID</label>
-                  <input type="text" id="env-tg-id" required placeholder="مثال: 12345678" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <input type="text" id="env-tg-id" placeholder="مثال: 12345678" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
                   <span class="text-[11px] text-slate-400 mt-1 block">من <a href="https://my.telegram.org" target="_blank" class="text-emerald-400 underline">my.telegram.org</a></span>
                 </div>
 
                 <div>
                   <label class="block text-xs font-semibold text-slate-300 mb-1">Telegram API Hash</label>
-                  <input type="text" id="env-tg-hash" required placeholder="مثال: 7378861b2704384ebcb772..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <input type="text" id="env-tg-hash" placeholder="مثال: 7378861b2704384ebcb772..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
                   <span class="text-[11px] text-slate-400 mt-1 block">من <a href="https://my.telegram.org" target="_blank" class="text-emerald-400 underline">my.telegram.org</a></span>
                 </div>
               </div>
@@ -342,20 +342,20 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-semibold text-slate-300 mb-1">Bot Token (من BotFather)</label>
-                  <input type="password" id="env-bot-token" required placeholder="مثال: 9033323321:AAF_YxG..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <input type="password" id="env-bot-token" placeholder="مثال: 9033323321:AAF_YxG..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
                   <span class="text-[11px] text-slate-400 mt-1 block">رمز التوكن الخاص ببوت الموافقات من @BotFather.</span>
                 </div>
 
                 <div>
                   <label class="block text-xs font-semibold text-slate-300 mb-1">My Chat ID (معرف حسابك لاستلام العروض)</label>
-                  <input type="text" id="env-chat-id" required placeholder="مثال: 6745928157" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                  <input type="text" id="env-chat-id" placeholder="مثال: 6745928157" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
                   <span class="text-[11px] text-slate-400 mt-1 block">معرف حسابك الشخصي (احصل عليه من بوت @userinfobot).</span>
                 </div>
               </div>
 
               <div>
                 <label class="block text-xs font-semibold text-slate-300 mb-1">قنوات الرصد والمراقبة (Target Channels)</label>
-                <input type="text" id="env-channels" required placeholder="@nafezly,@KhamsatRequests,@MostaqlDevelopment" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
+                <input type="text" id="env-channels" placeholder="@nafezly,@KhamsatRequests,@MostaqlDevelopment" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500 transition">
                 <span class="text-[11px] text-slate-400 mt-1 block">يوزرات القنوات مفصولة بفاصلة.</span>
               </div>
             </div>
@@ -498,19 +498,46 @@
     }
 
     // -----------------------------------------------------------------------
-    // Profile API
+    // Profile API with LocalStorage Caching & Server Persistence
     // -----------------------------------------------------------------------
     async function loadProfile() {
+      // 1. First restore instantly from browser LocalStorage if available
+      try {
+        const cached = localStorage.getItem('atrees_profile_cache');
+        if (cached) {
+          const c = JSON.parse(cached);
+          if (c.name) document.getElementById('prof-name').value = c.name;
+          if (c.title) document.getElementById('prof-title').value = c.title;
+          if (c.years_of_experience) document.getElementById('prof-exp').value = c.years_of_experience;
+          if (c.tech_stack) document.getElementById('prof-skills').value = c.tech_stack;
+          if (c.custom_instructions) document.getElementById('prof-instructions').value = c.custom_instructions;
+        }
+      } catch (e) {
+        console.warn('LocalStorage profile read warning:', e);
+      }
+
+      // 2. Fetch authoritative data from server /api/profile
       try {
         const res = await fetch('/api/profile');
         if (!res.ok) throw new Error('فشل قراءة الملف الشخصي');
         const data = await res.json();
         
-        document.getElementById('prof-name').value = data.name || '';
-        document.getElementById('prof-title').value = data.title || '';
-        document.getElementById('prof-exp').value = data.years_of_experience || 5;
-        document.getElementById('prof-skills').value = data.tech_stack_str || (Array.isArray(data.tech_stack) ? data.tech_stack.join(', ') : '');
-        document.getElementById('prof-instructions').value = data.custom_instructions || data.tone_of_voice || '';
+        if (data.name) document.getElementById('prof-name').value = data.name;
+        if (data.title) document.getElementById('prof-title').value = data.title;
+        if (data.years_of_experience) document.getElementById('prof-exp').value = data.years_of_experience;
+        const skillsStr = data.tech_stack_str || (Array.isArray(data.tech_stack) ? data.tech_stack.join(', ') : '');
+        if (skillsStr) document.getElementById('prof-skills').value = skillsStr;
+        const instStr = data.custom_instructions || data.tone_of_voice || '';
+        if (instStr) document.getElementById('prof-instructions').value = instStr;
+
+        // Sync fresh server data back to browser LocalStorage
+        localStorage.setItem('atrees_profile_cache', JSON.stringify({
+          name: document.getElementById('prof-name').value,
+          title: document.getElementById('prof-title').value,
+          years_of_experience: document.getElementById('prof-exp').value,
+          tech_stack: document.getElementById('prof-skills').value,
+          custom_instructions: document.getElementById('prof-instructions').value
+        }));
       } catch (err) {
         console.error('loadProfile error:', err);
       }
@@ -530,7 +557,15 @@
         custom_instructions: document.getElementById('prof-instructions').value
       };
 
+      // Instantly save to Browser LocalStorage
       try {
+        localStorage.setItem('atrees_profile_cache', JSON.stringify(payload));
+      } catch (e) {
+        console.warn('LocalStorage save error:', e);
+      }
+
+      try {
+        console.log('[Dashboard] Saving Profile payload:', payload);
         const res = await fetch('/api/profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -543,7 +578,8 @@
           throw new Error(data.detail || data.message || 'فشل الحفظ');
         }
       } catch (err) {
-        showToast(err.message, 'error');
+        console.error('[Dashboard] Error saving profile:', err);
+        showToast('خطأ أثناء الحفظ: ' + err.message, 'error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>حفظ بيانات الملف الشخصي</span>`;
@@ -551,26 +587,67 @@
     }
 
     // -----------------------------------------------------------------------
-    // Environment (.env) API
+    // Environment (.env) API with LocalStorage Caching & Server Persistence
     // -----------------------------------------------------------------------
     async function loadEnv() {
+      // 1. First restore instantly from browser LocalStorage if available
+      try {
+        const cached = localStorage.getItem('atrees_env_cache');
+        if (cached) {
+          const c = JSON.parse(cached);
+          if (c.TG_API_ID) document.getElementById('env-tg-id').value = c.TG_API_ID;
+          if (c.TG_API_HASH) document.getElementById('env-tg-hash').value = c.TG_API_HASH;
+          if (c.TARGET_CHANNELS) document.getElementById('env-channels').value = c.TARGET_CHANNELS;
+          if (c.BOT_TOKEN) document.getElementById('env-bot-token').value = c.BOT_TOKEN;
+          if (c.MY_CHAT_ID) document.getElementById('env-chat-id').value = c.MY_CHAT_ID;
+          if (c.GEMINI_API_KEY) document.getElementById('env-gemini-key').value = c.GEMINI_API_KEY;
+          if (c.GEMINI_MODEL) document.getElementById('env-gemini-model').value = c.GEMINI_MODEL;
+          if (c.GROQ_API_KEY) document.getElementById('env-groq-key').value = c.GROQ_API_KEY;
+          if (c.GROQ_MODEL) document.getElementById('env-groq-model').value = c.GROQ_MODEL;
+          if (c.BROWSER_HEADLESS !== undefined) document.getElementById('env-headless').checked = c.BROWSER_HEADLESS === 'true';
+          if (c.AUTO_SUBMIT_CONFIRM !== undefined) document.getElementById('env-autosubmit').checked = c.AUTO_SUBMIT_CONFIRM === 'true';
+        }
+      } catch (e) {
+        console.warn('LocalStorage env read warning:', e);
+      }
+
+      // 2. Fetch authoritative data from server /api/env
       try {
         const res = await fetch('/api/env');
         if (!res.ok) throw new Error('فشل قراءة ملف .env');
         const data = await res.json();
 
-        document.getElementById('env-tg-id').value = data.TG_API_ID || '';
-        document.getElementById('env-tg-hash').value = data.TG_API_HASH || '';
-        document.getElementById('env-channels').value = data.TARGET_CHANNELS || '@nafezly,@KhamsatRequests,@MostaqlDevelopment';
-        document.getElementById('env-bot-token').value = data.BOT_TOKEN || '';
-        document.getElementById('env-chat-id').value = data.MY_CHAT_ID || '';
-        document.getElementById('env-gemini-key').value = data.GEMINI_API_KEY || '';
-        document.getElementById('env-gemini-model').value = data.GEMINI_MODEL || 'gemini-3.1-flash-lite';
-        document.getElementById('env-groq-key').value = data.GROQ_API_KEY || '';
-        document.getElementById('env-groq-model').value = data.GROQ_MODEL || 'openai/gpt-oss-120b';
+        if (data.TG_API_ID) document.getElementById('env-tg-id').value = data.TG_API_ID;
+        if (data.TG_API_HASH) document.getElementById('env-tg-hash').value = data.TG_API_HASH;
+        if (data.TARGET_CHANNELS) document.getElementById('env-channels').value = data.TARGET_CHANNELS;
+        if (data.BOT_TOKEN) document.getElementById('env-bot-token').value = data.BOT_TOKEN;
+        if (data.MY_CHAT_ID) document.getElementById('env-chat-id').value = data.MY_CHAT_ID;
+        if (data.GEMINI_API_KEY) document.getElementById('env-gemini-key').value = data.GEMINI_API_KEY;
+        if (data.GEMINI_MODEL) document.getElementById('env-gemini-model').value = data.GEMINI_MODEL;
+        if (data.GROQ_API_KEY) document.getElementById('env-groq-key').value = data.GROQ_API_KEY;
+        if (data.GROQ_MODEL) document.getElementById('env-groq-model').value = data.GROQ_MODEL;
 
-        document.getElementById('env-headless').checked = String(data.BROWSER_HEADLESS).toLowerCase() === 'true';
-        document.getElementById('env-autosubmit').checked = String(data.AUTO_SUBMIT_CONFIRM).toLowerCase() === 'true';
+        if (data.BROWSER_HEADLESS !== undefined) {
+          document.getElementById('env-headless').checked = String(data.BROWSER_HEADLESS).toLowerCase() === 'true';
+        }
+        if (data.AUTO_SUBMIT_CONFIRM !== undefined) {
+          document.getElementById('env-autosubmit').checked = String(data.AUTO_SUBMIT_CONFIRM).toLowerCase() === 'true';
+        }
+
+        // Sync fresh server values back to browser LocalStorage
+        localStorage.setItem('atrees_env_cache', JSON.stringify({
+          TG_API_ID: document.getElementById('env-tg-id').value,
+          TG_API_HASH: document.getElementById('env-tg-hash').value,
+          TARGET_CHANNELS: document.getElementById('env-channels').value,
+          BOT_TOKEN: document.getElementById('env-bot-token').value,
+          MY_CHAT_ID: document.getElementById('env-chat-id').value,
+          GEMINI_API_KEY: document.getElementById('env-gemini-key').value,
+          GEMINI_MODEL: document.getElementById('env-gemini-model').value,
+          GROQ_API_KEY: document.getElementById('env-groq-key').value,
+          GROQ_MODEL: document.getElementById('env-groq-model').value,
+          BROWSER_HEADLESS: document.getElementById('env-headless').checked ? 'true' : 'false',
+          AUTO_SUBMIT_CONFIRM: document.getElementById('env-autosubmit').checked ? 'true' : 'false'
+        }));
       } catch (err) {
         console.error('loadEnv error:', err);
       }
@@ -596,7 +673,15 @@
         AUTO_SUBMIT_CONFIRM: document.getElementById('env-autosubmit').checked ? 'true' : 'false'
       };
 
+      // Instantly save to Browser LocalStorage
       try {
+        localStorage.setItem('atrees_env_cache', JSON.stringify(payload));
+      } catch (e) {
+        console.warn('LocalStorage save error:', e);
+      }
+
+      try {
+        console.log('[Dashboard] Saving Env settings payload:', payload);
         const res = await fetch('/api/env', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -609,7 +694,8 @@
           throw new Error(data.detail || data.message || 'فشل الحفظ');
         }
       } catch (err) {
-        showToast(err.message, 'error');
+        console.error('[Dashboard] Error saving env:', err);
+        showToast('خطأ أثناء الحفظ: ' + err.message, 'error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>حفظ مفاتيح وإعدادات الـ .env</span>`;

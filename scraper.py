@@ -119,16 +119,20 @@ class ProjectScraper:
         )
         description = desc_el.get_text("\n", strip=True) if desc_el else fallback_text
 
-        # Budget & Duration from metadata table
+        # Budget & Duration from metadata (Mostaql uses div.meta-row, table rows tr, or list items)
         budget = ""
         duration = ""
-        meta_table = soup.select(".project__meta tr, .table-project-meta tr")
-        for row in meta_table:
-            text = row.get_text(" ", strip=True)
-            if "الميزانية" in text:
-                budget = re.sub(r"الميزانية\s*:?", "", text).strip()
-            elif "مدة التنفيذ" in text:
-                duration = re.sub(r"مدة التنفيذ\s*:?", "", text).strip()
+        meta_elements = soup.select(".meta-row, .project__meta tr, .table-project-meta tr, .project__meta li, li")
+        for el in meta_elements:
+            text = el.get_text(" ", strip=True)
+            if "الميزانية" in text and not budget:
+                clean_b = re.sub(r"الميزانية\s*:?", "", text).strip()
+                if clean_b:
+                    budget = clean_b
+            elif "مدة التنفيذ" in text and not duration:
+                clean_d = re.sub(r"مدة التنفيذ\s*:?", "", text).strip()
+                if clean_d:
+                    duration = clean_d
 
         # Skills / Tags
         skills = []

@@ -27,10 +27,13 @@ PROFILE_PATH = Path(__file__).resolve().parent / "my_profile.json"
 
 class JobAnalysisResult(BaseModel):
     is_relevant: bool = Field(
-        description="True ONLY if the job is related to ANY form of Web Development as defined in the criteria."
+        description="True ONLY if the job matches any of the freelancer's listed skills or services."
     )
     reason: str = Field(
-        description="Brief concise reason explaining why it matches web development criteria or why it was rejected."
+        description=(
+            "Brief concise summary of the project and why it matches in ARABIC ONLY (باللغة العربية حصراً). "
+            "مثال: 'المشروع يتطلب ربط واجهات أمامية بـ API وبناء لوحة تحكم، وهو صلب تخصصي.'"
+        )
     )
     estimated_budget: str = Field(
         description="Estimated budget range or suggested delivery timeline if applicable (e.g., '$100 - $200 / 3-5 days' or 'حسب نطاق العمل المطلوب')."
@@ -59,26 +62,63 @@ def load_profile() -> dict:
 
 
 def build_system_instruction() -> str:
-    return """You are a highly sought-after, senior Full-Stack Web Developer (.NET Core, React, Next.js).
-Your goal is to write a highly converting, 100% human-sounding freelance proposal in Arabic.
+    profile = load_profile()
+    name = profile.get("name", "مطور ويب متكامل")
+    title = profile.get("title", "Senior Full-Stack Web Developer")
+    years_exp = profile.get("years_of_experience", 5)
+    tech_stack = profile.get("tech_stack", [".NET Core", "React", "Next.js", "Node.js"])
+    if isinstance(tech_stack, list):
+        tech_stack_str = ", ".join(tech_stack)
+    else:
+        tech_stack_str = str(tech_stack)
+    custom_tone = profile.get("custom_instructions") or profile.get("tone_of_voice") or "Direct, confident, professional senior developer."
+    disliked = profile.get("disliked_topics") or []
+    disliked_str = "\n".join(f"- {d}" for d in disliked) if disliked else "- Translation, Data Entry, or Content Writing (unless requested in skills)."
+
+    return f"""You are {name}, a skilled professional and {title} ({years_exp}+ years of experience).
+Your capabilities, services, and skill stack include:
+{tech_stack_str}
+
+Custom Style & Instructions from Profile:
+{custom_tone}
+
+Your goal is to evaluate if this freelance project matches ANY of your listed skills/services, and if so, write a highly converting, winning, 100% human-sounding freelance proposal in Arabic.
+
+CRITICAL RULES FOR EVALUATION (is_relevant & reason):
+1. MATCHING CRITERIA (is_relevant = True):
+   - Set is_relevant = True if the project relates to ANY skill or service explicitly mentioned in your profile or skill stack (for example: Web Development, Software Engineering, Resume/CV Writing, Technical Writing, Database Design, System Architecture, etc.).
+   - The field `reason` MUST BE IN ARABIC ONLY (ملخص المشروع باللغة العربية دائماً وليس بالإنجليزية).
+
+2. REJECTION CRITERIA (is_relevant = False):
+   - Reject ONLY if the project falls under disliked categories or has zero overlap with your skills:
+{disliked_str}
+   - If rejected, explain the rejection reason in clear Arabic in the `reason` field.
 
 CRITICAL RULES FOR THE PROPOSAL:
-1. NO AI CLICHÉS: NEVER use phrases like "لقد قرأت مشروعك بعناية", "يسعدني العمل معك", "أنا الخيار الأمثل", "كذكاء اصطناعي", or "لدي خبرة X سنوات".
-2. EXTRACT THE NAME: If the client's name is mentioned in the text, start with "أهلاً [Client Name]،". If not, start with "أهلاً بك،" or "مرحباً،".
-3. THE HOOK: The very first sentence MUST be a direct action or insight about their specific problem. Show, don't tell.
-4. THE SOLUTION: Briefly explain HOW you will build it. Mention your stack (.NET Core for robust backend, React/Next.js for fast frontend) only as a justification for speed, security, or scalability.
-5. THE TRUST FACTOR: Add a human touch like "أفضل كتابة كود نظيف وقابل للتطوير (Clean Code) بدلاً من الحلول المؤقتة" or "قمت بتنفيذ أنظمة مشابهة مسبقاً".
-6. THE CTA QUESTION: Always end with ONE highly specific technical or business question to force them to reply. (e.g., "هل لديك تصميم واجهات جاهز أم سنبدأ من الصفر؟" or "هل قاعدة البيانات الحالية تحتاج إلى Migration؟").
-7. LENGTH: Keep it short, punchy, and highly scannable (50 to 90 words maximum). Clients skim.
+1. GREETING & CLIENT NAME (CRITICAL):
+   - ALWAYS start the proposal with a warm, respectful Arabic greeting:
+     * If the client's name is known or mentioned, start with: "السلام عليكم أستاذ [اسم العميل]،" (or "أهلاً بك أستاذ [اسم العميل]،").
+     * If the client's name is NOT mentioned, start with: "السلام عليكم أخي الكريم،" أو "السلام عليكم ورحمة الله،".
+   - Follow the greeting immediately with a line break or continue into the core solution.
 
-CRITERIA FOR APPROVAL (is_relevant = True):
-- Any frontend or backend development, API integration, server setup, or bug fixing.
+2. DEEP REQUIREMENT TARGETING:
+   - Address the CORE needs requested by the client (e.g. for CV writing: ATS-friendly format, professional summary, restructuring experience; for Web: responsive UI, backend logic, APIs).
+   - Talk about the RESULT and BUSINESS VALUE you will deliver.
 
-CRITERIA FOR REJECTION (is_relevant = False):
-- Native Mobile App Development (unless it's a backend/API for the app).
-- Graphic Design, Translation, Data Entry, Marketing.
+3. NO AI CLICHÉS OR ROBOTIC PHRASES:
+   - NEVER use generic phrases like: "لقد قرأت مشروعك بعناية", "يسعدني ويشرفني", "أنا الخيار الأمثل", "كذكاء اصطناعي", "بصفتي خبير".
+   - Enter directly into your technical insight or practical execution plan.
 
-Output strictly in the specified JSON schema. The `proposal_arabic` MUST sound like a direct, confident message from a senior Egyptian/Arab developer to a client."""
+4. STRUCTURE OF A WINNING PROPOSAL:
+   - GREETING: "السلام عليكم أستاذ [الاسم]،"
+   - THE HOOK: Direct insight addressing their specific project problem or requirement.
+   - THE EXECUTION PLAN: 2-3 concise points showing exactly how you will execute the work.
+   - THE TRUST FACTOR: Professional standard, attention to detail, and proven track record.
+   - THE CTA QUESTION: Always end with ONE smart question that invites a direct conversation and makes replying easy.
+
+5. LENGTH: 70 to 130 words maximum. Natural, polished professional Arabic.
+
+Output strictly in the specified JSON schema."""
 
 
 def _clean_json_markdown(text: str) -> str:
